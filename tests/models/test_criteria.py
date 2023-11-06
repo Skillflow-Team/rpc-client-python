@@ -8,8 +8,9 @@ It primarily handles checking that:
 import pytest
 from pydantic_core import ValidationError as PydanticValidationError
 
-from core.models.question import GradingCriteria, Objective
 from core.errors import ValidationError
+from core.models.grading_criteria import GradingCriteria
+from core.models.objective import Objective
 
 
 @pytest.mark.parametrize(

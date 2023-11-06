@@ -12,8 +12,10 @@ from unittest.mock import patch
 
 import pytest
 
-from core.models.question import ShortAnswerQuestion, Rubric, RubricType, Objective
 from core.errors import ValidationError
+from core.models.objective import Objective
+from core.models.rubric import Rubric, RubricType
+from core.models.short_answer import ShortAnswerQuestion
 
 
 def test_short_answer_question_init_no_rubric():

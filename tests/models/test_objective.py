@@ -3,7 +3,7 @@
 It primarily handles checking that all the required types are included.
 """
 
-from core.models.question import Objective
+from core.models.objective import Objective
 
 
 def test_obejctive_values():

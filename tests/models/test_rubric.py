@@ -8,39 +8,25 @@ We want to check that:
     - The `from_rubric_type` classmethod creates a rubric with the correct
         criteria
 """
-from unittest.mock import patch, call
 
 import pytest
 
-from core.models.question import (
+from core.models.objective import Objective
+from core.models.rubric import (
     Rubric,
     RubricType,
-    DEFAULT_RUBRIC_CRITERIA,
-    Objective,
 )
 from core.errors import ValidationError
 
 
 def test_rubric_type_values():
     """Test the the RubricType class has all the correct values."""
-    assert RubricType.FACTUAL_RUBRIC.value == "Factual Rubric"
-    assert RubricType.ANALYTICAL_RUBRIC.value == "Analytical Rubric"
-    assert RubricType.CREATIVE_RUBRIC.value == "Creative Rubric"
-    assert RubricType.APPLICATION_RUBRIC.value == "Application Rubric"
-    assert RubricType.COMPREHENSIVE_RUBRIC.value == "Comprehensive Rubric"
-    assert RubricType.COMMUNICATION_RUBRIC.value == "Communication Rubric"
-
-
-def test_default_criteria_dictonary():
-    """Test that the DEFAULT_RUBRIC_CRITERIA dictionary is configured correctly with
-    all the RubricType values.
-    """
-    assert RubricType.FACTUAL_RUBRIC in DEFAULT_RUBRIC_CRITERIA
-    assert RubricType.ANALYTICAL_RUBRIC in DEFAULT_RUBRIC_CRITERIA
-    assert RubricType.CREATIVE_RUBRIC in DEFAULT_RUBRIC_CRITERIA
-    assert RubricType.APPLICATION_RUBRIC in DEFAULT_RUBRIC_CRITERIA
-    assert RubricType.COMPREHENSIVE_RUBRIC in DEFAULT_RUBRIC_CRITERIA
-    assert RubricType.COMMUNICATION_RUBRIC in DEFAULT_RUBRIC_CRITERIA
+    assert RubricType.FACTUAL_RUBRIC.label == "Factual Rubric"
+    assert RubricType.ANALYTICAL_RUBRIC.label == "Analytical Rubric"
+    assert RubricType.CREATIVE_RUBRIC.label == "Creative Rubric"
+    assert RubricType.APPLICATION_RUBRIC.label == "Application Rubric"
+    assert RubricType.COMPREHENSIVE_RUBRIC.label == "Comprehensive Rubric"
+    assert RubricType.COMMUNICATION_RUBRIC.label == "Communication Rubric"
 
 
 @pytest.mark.parametrize(
@@ -56,7 +42,10 @@ def test_default_criteria_dictonary():
 )
 def test_get_default_criteria(rubric_type):
     """Test that the get_default_criteria method is configured correctly."""
-    assert rubric_type.get_default_criteria() == DEFAULT_RUBRIC_CRITERIA[rubric_type]
+    criteria = rubric_type.criteria
+    raw_criteria = rubric_type._default_criteria  # pylint: disable=protected-access
+    for crit in criteria:
+        assert (crit.objective, crit.weight) in raw_criteria
 
 
 def test_empty_rubric():
@@ -80,20 +69,11 @@ def test_empty_rubric():
 def test_from_rubric_type(rubric_type):
     """Test that the from_rubric_type class method correctly configures a rubric
     with the correct criteria."""
-    with patch("core.models.question.GradingCriteria") as mock_criteria:
-        rubric = Rubric.from_rubric_type(rubric_type)
-        expected_calls = [
-            call(objective=objective, weight=weight)
-            for objective, weight in DEFAULT_RUBRIC_CRITERIA[rubric_type]
-        ]
-        assert mock_criteria.call_args_list == expected_calls
-        assert len(rubric.criteria) == len(expected_calls)
-
-        # Ensure all the necessary values of the rubric are present
-        criteria_expected = rubric_type.get_default_criteria()
-        for objective, weight in criteria_expected:
-            assert objective in rubric.criteria
-            assert float(rubric.criteria[objective].weight) == weight
+    rubric = Rubric.from_rubric_type(rubric_type)
+    assert rubric.rubric_type == rubric_type
+    assert len(rubric.criteria) == len(rubric_type.criteria)
+    for objective in rubric.criteria:
+        assert rubric.criteria[objective] in rubric_type.criteria
 
 
 def test_add_criteria():
@@ -128,7 +108,9 @@ def test_serialize():
     rubric = Rubric.from_rubric_type(RubricType.FACTUAL_RUBRIC)
     data = rubric.serialize()
 
-    criteria = RubricType.FACTUAL_RUBRIC.get_default_criteria()
-    serialized_criteria = [(k.value, v) for k, v in criteria]
+    criteria = RubricType.FACTUAL_RUBRIC.criteria
+    criteria_serialized_tuples = [
+        (crit.objective.value, crit.weight) for crit in criteria
+    ]
     for k, v in data.items():
-        assert (k, v) in serialized_criteria
+        assert (k, v) in criteria_serialized_tuples
