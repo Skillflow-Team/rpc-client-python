@@ -1,3 +1,10 @@
 # Python Directories
 __pycache__
 venv
+
+
+# Python Files
+.coverage
+
+# Enivronment files
+.env
