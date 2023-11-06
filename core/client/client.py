@@ -1,8 +1,11 @@
 """This file defines the RPC client, which connects to the RPC server."""
 import os
 from typing import Any, Dict, List, Union
+from uuid import uuid4
 
 import requests
+
+from core.errors import NetworkError, RPCMethodError
 
 HOSTED_ENDPOINT = "http://18.118.162.4/"
 
@@ -36,7 +39,7 @@ class RPCClient:
     def payload(self, method: str, params: Any) -> Dict[str, Any]:
         """Return the payload for the request."""
         return {
-            "id": 1,
+            "id": str(uuid4()),
             "jsonrpc": "2.0",
             "method": method,
             "params": params,
@@ -46,9 +49,7 @@ class RPCClient:
         """Parse the response from the RPC server."""
         response_data = response.json()
         if "error" in response_data:
-            raise Exception(  # pylint: disable=broad-exception-raised
-                response_data["error"]
-            )
+            raise RPCMethodError.from_response_payload(response_data)
         result = response_data["result"]
         return result
 
@@ -57,9 +58,14 @@ class RPCClient:
     ) -> requests.Response:
         """Make a request to the RPC server."""
         payload = self.payload(method, params)
-        response = requests.post(
-            self.endpoint, json=payload, headers=self.headers, timeout=10
-        )
+        try:
+            response = requests.post(
+                self.endpoint, json=payload, headers=self.headers, timeout=10
+            )
+        except Exception as exp:
+            raise NetworkError(  # pylint: disable=broad-exception-raised
+                f"Failed to connect to the RPC server: {exp}"
+            ) from exp
 
         result = self.parse_response(response)
         return result
