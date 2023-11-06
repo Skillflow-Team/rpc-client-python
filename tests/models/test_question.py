@@ -150,7 +150,7 @@ def test__serialize_method():
         rubric=Rubric.from_rubric_type(RubricType.FACTUAL_RUBRIC),
     )
     assert question._serialize() == {  # pylint: disable=protected-access
-        "body": "What is the capital of Australia?",
+        "question": "What is the capital of Australia?",
         "example_answer": "Canberra",
         "rubric": {
             "factual understanding": 1.0,
@@ -161,6 +161,19 @@ def test__serialize_method():
 
 
 def test_grade_method():
-    """Test the grade method."""
-    with pytest.raises(NotImplementedError):
-        ShortAnswerQuestion("body", "answer").grade("answer")
+    """Test that the grade method is configured correctly."""
+    question = ShortAnswerQuestion(
+        "What is the capital of Australia?",
+        "Canberra",
+        rubric=Rubric.from_rubric_type(RubricType.FACTUAL_RUBRIC),
+    )
+    with patch("core.client.client.RPCClient.short_answer") as mock_request:
+        mock_request.return_value = ("feedback", 1.0)
+        feedback, score = question.grade("answer")
+
+        mock_request.assert_called_once_with(
+            question._serialize(), "answer"  # pylint: disable=protected-access
+        )
+
+        assert feedback == "feedback"
+        assert score == 1.0

@@ -18,6 +18,7 @@ Example:
 """
 from typing import Dict, Union
 
+from core.client import RPCClient
 from core.errors import ValidationError
 
 from .objective import Objective
@@ -59,14 +60,16 @@ class ShortAnswerQuestion:
         """Serialize the question to a dictionary."""
         # Return the serialized question
         return {
-            "body": self.body,
+            "question": self.body,
             "example_answer": self.example_answer,
             "rubric": self.rubric.serialize(),
         }
 
     def grade(self, answer: str):
         """Grade the answer to the question."""
-        raise NotImplementedError()
+        client = RPCClient()
+        feedback, score = client.short_answer(self._serialize(), answer)
+        return feedback, score
 
     @classmethod
     def from_rubric_type(
