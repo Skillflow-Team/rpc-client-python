@@ -4,8 +4,6 @@ This library provides a straightforward interface for interacting with the
 Turing RPC Server. It simplifies the process of sending questions and receiving
 answers.
 
-## Project Installation
-
 ## Project Structure
 
 The client library is structured into modules within the `core` directory for
