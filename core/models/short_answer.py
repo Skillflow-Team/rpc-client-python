@@ -82,3 +82,12 @@ class ShortAnswerQuestion:
             example_answer=example_answer,
             rubric=rubric,
         )
+
+    @classmethod
+    def from_dict(cls, payload: Dict[str, Union[str, Dict[str, float]]]):
+        """Creates a new short answer question from a dictionary."""
+        return cls(
+            body=payload["body"],
+            example_answer=payload["example_answer"],
+            rubric=Rubric.from_dict(payload["rubric"]),
+        )
