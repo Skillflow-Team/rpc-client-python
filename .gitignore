@@ -8,3 +8,6 @@ venv
 
 # Enivronment files
 .env
+
+# Documentation Files
+docs/build/*
