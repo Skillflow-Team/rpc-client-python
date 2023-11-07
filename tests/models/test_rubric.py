@@ -114,3 +114,22 @@ def test_serialize():
     ]
     for k, v in data.items():
         assert (k, v) in criteria_serialized_tuples
+
+
+@pytest.mark.parametrize(
+    "data,expected",
+    [
+        ({}, None),
+        ({"factual understanding": 1.0}, None),
+        ({"clarity of writing": 1.0, "analytical skills": 2.0}, None),
+        ({"not an objective": 1.0}, ValidationError),
+    ],
+)
+def test_from_dict_method(data, expected):
+    """Test that the from_dict method is configured correctly."""
+    if expected:
+        with pytest.raises(expected):
+            Rubric.from_dict(data)
+    else:
+        rubric = Rubric.from_dict(data)
+        assert rubric.size == len(data)

@@ -137,11 +137,18 @@ class Rubric:
     @classmethod
     def from_dict(cls, payload: Dict[str, float]) -> "Rubric":
         """Creates a new rubric from a dictionary."""
-        criteria = {
-            Objective(objective): GradingCriteria(
-                objective=Objective(objective), weight=weight
-            )
-            for objective, weight in payload.items()
-        }
-        # Create a new rubric with the provided criteria and a RubricType of CUSTOM_RUBRIC
-        return cls(criteria=criteria)
+        try:
+            criteria = {
+                Objective(objective): GradingCriteria(
+                    objective=Objective(objective), weight=weight
+                )
+                for objective, weight in payload.items()
+            }
+            # Create a new rubric with the provided criteria and a RubricType of CUSTOM_RUBRIC
+            return cls(criteria=criteria)
+        except ValueError as exp:
+            raise ValidationError("Invalid payload.") from exp
+        except AttributeError as exp:
+            raise ValidationError(
+                "Invalid payload provided. Must be a dictionary."
+            ) from exp

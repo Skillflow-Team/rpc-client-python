@@ -86,8 +86,13 @@ class ShortAnswerQuestion:
     @classmethod
     def from_dict(cls, payload: Dict[str, Union[str, Dict[str, float]]]):
         """Creates a new short answer question from a dictionary."""
-        return cls(
-            body=payload["body"],
-            example_answer=payload["example_answer"],
-            rubric=Rubric.from_dict(payload["rubric"]),
-        )
+        try:
+            return cls(
+                body=payload["body"],
+                example_answer=payload["example_answer"],
+                rubric=Rubric.from_dict(  # Use the `from_dict` method if the payload is a dictionary
+                    payload["rubric"]
+                ),
+            )
+        except KeyError as exp:
+            raise ValidationError("Missing key in payload") from exp
