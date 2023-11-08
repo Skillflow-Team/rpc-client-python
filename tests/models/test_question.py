@@ -177,3 +177,44 @@ def test_grade_method():
 
         assert feedback == "feedback"
         assert score == 1.0
+
+
+def test_from_dict_method():
+    """Test the from dict method of the ShortAnswerQuestion class."""
+    question = ShortAnswerQuestion.from_dict(
+        {
+            "body": "What is the capital of Australia?",
+            "example_answer": "Canberra",
+            "rubric": {
+                "factual understanding": 1.0,
+                "clarity of writing": 1.0,
+                "use of evidence": 1.0,
+            },
+        }
+    )
+
+    assert question.body == "What is the capital of Australia?"
+    assert question.example_answer == "Canberra"
+    assert question.rubric.size == 3
+    assert question.rubric.rubric_type == RubricType.CUSTOM_RUBRIC
+
+
+@pytest.mark.parametrize(
+    "data,expected",
+    [
+        ({"body": "a", "example_answer": "b", "rubric": "c"}, ValidationError),
+        (
+            {"example_answer": "b", "rubric": RubricType.FACTUAL_RUBRIC.label},
+            ValidationError,
+        ),
+        ({"body": "a", "rubric": RubricType.FACTUAL_RUBRIC.label}, ValidationError),
+        (
+            {"body": "a", "example_answer": "b", "rubric": {"invalid": 0.5}},
+            ValidationError,
+        ),
+    ],
+)
+def test_from_dict_method_failed(data, expected):
+    """Test the from_dict method with bad payloads."""
+    with pytest.raises(expected):
+        ShortAnswerQuestion.from_dict(data)
