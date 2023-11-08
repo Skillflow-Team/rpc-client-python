@@ -1,10 +1,13 @@
 # Python Directories
 __pycache__
 venv
-
+.pytest_cache
 
 # Python Files
 .coverage
 
 # Enivronment files
 .env
+
+# Documentation Files
+docs/build/*
