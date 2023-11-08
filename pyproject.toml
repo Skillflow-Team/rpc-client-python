@@ -1,10 +1,13 @@
 [tool.poetry]
-name = "turing"
-version = "0.0.2"
+name = "turing-ai"
+version = "0.0.1"
 description = "The Turing client library implemented in Python."
 authors = ["Turing"]
 license = "MIT"
 readme = "README.md"
+
+[[tool.poetry.packages]]
+include = "turing"
 
 [tool.poetry.dependencies]
 python = "^3.8"
