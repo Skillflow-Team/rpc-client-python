@@ -1,13 +1,55 @@
-"""This file defines the objective object."""
+"""
+The Objective class is a fundamental part of the Turing SDK. It is implemented as an
+enumeration (enum), where each enum value represents a different grading objective.
+These objectives are used by the LLM (Large Language Model) to grade questions.
+
+Each `Objective` is associated with a specific "objective" for the LLM to focus on when grading.
+If you choose to build a custom rubric by defining your `Objectives` manually, be sure to
+experiment with different combinations to find out which ones work best for your use case.
+"""
 
 from enum import Enum
 
 
 class Objective(Enum):
-    """The objective component.
+    """
+    The Objective class is an enumeration (Enum) that represents different grading objectives.
 
-    This component defines the different objectives that can be used to grade a question. They
-    the different objective grading criteria that can be used to evaluate a response.
+    Attributes
+    ----------
+    FACTUAL
+        Represents the objective of providing correct information.
+    CLARITY
+        Represents the objective of clarity in writing.
+    CREATIVITY
+        Represents the objective of creativity in response.
+    ANALYSIS
+        Represents the objective of analytical skills.
+    APPLICATION
+        Represents the objective of applying learned concepts to new scenarios.
+    EVIDENCE
+        Represents the objective of backing up the answer with relevant data or examples.
+    REFLECTION
+        Represents the objective of showcasing self-awareness or connections to personal
+        experiences.
+
+
+    Each enum value represents a different aspect of the grading process, such as grammar,
+    relevance, or accuracy. These objectives are used by the LLM to grade questions.
+
+    Example
+    -------
+    For some helpful context, we can use the Objective class like any other enum class::
+
+        >>> from core.models.objective import Objective
+
+        >>> # Define a new Objective
+        >>> factual_objective = Objective.FACTUAL
+
+        >>> # Print the name of the Objective
+        >>> print(factual_objective.value)
+        >>> # 'factual understanding'
+
     """
 
     # How well does the student provide correct information
