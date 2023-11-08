@@ -6,6 +6,7 @@
 Turing Python Client Library's Documentation!
 ========================================================
 
+.. include:: core.rst
 
 Indices and tables
 ==================
@@ -13,5 +14,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-.. include:: core.rst
