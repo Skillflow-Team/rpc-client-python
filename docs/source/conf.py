@@ -8,13 +8,13 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("../.."))
+sys.path.insert(0, os.path.abspath("../../turing"))
 
-import core
+import core  # pylint: disable=unused-import,wrong-import-position,import-error
 
 
 project = "Turing Python Client Library"
-copyright = "2023, Turing"
+copyright = "2023, Turing"  # pylint: disable=redefined-builtin
 author = "Turing"
 release = "v0.0.1"
 
@@ -34,6 +34,6 @@ autodoc_member_order = "bysource"
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = "sphinx_book_theme"
+html_theme = "furo"
 html_static_path = ["_static"]
 highlight_language = "python"
