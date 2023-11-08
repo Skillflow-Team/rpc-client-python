@@ -13,10 +13,10 @@ tuple, therefore meaning that we cannot instantiate the class with an intializer
 from enum import Enum
 from typing import Dict, Optional
 
-from core.errors import ValidationError
 
 from .grading_criteria import GradingCriteria
 from .objective import Objective
+from ..errors import ValidationError
 
 
 class RubricType(Enum):
@@ -42,7 +42,7 @@ class RubricType(Enum):
     -------
     As with any enum class, we can create a RubricType object by referencing the enum value::
 
-        from core.models.rubric import RubricType
+        from turing.models.rubric import RubricType
 
         # Create a new RubricType
         factual_rubric = RubricType.FACTUAL_RUBRIC

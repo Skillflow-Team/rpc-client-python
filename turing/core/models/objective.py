@@ -41,7 +41,7 @@ class Objective(Enum):
     -------
     For some helpful context, we can use the Objective class like any other enum class::
 
-        >>> from core.models.objective import Objective
+        >>> from turing.models.objective import Objective
 
         >>> # Define a new Objective
         >>> factual_objective = Objective.FACTUAL

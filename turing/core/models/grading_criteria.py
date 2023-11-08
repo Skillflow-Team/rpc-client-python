@@ -12,9 +12,9 @@ and store grading criteria along with their respective weights.
 from pydantic import BaseModel, field_validator
 from pydantic_core import ValidationError as PydanticValidationError
 
-from core.errors import ValidationError
 
 from .objective import Objective
+from ..errors import ValidationError
 
 
 class GradingCriteria(BaseModel):
@@ -42,8 +42,8 @@ class GradingCriteria(BaseModel):
     --------------------------
     For some helpful context, we can use the GradingCriteria class like any other pydantic model::
 
-        from core.models.grading_criteria import GradingCriteria
-        from core.models.objective import Objective
+        from turing.models.grading_criteria import GradingCriteria
+        from turing.models.objective import Objective
 
         # Define a new GradingCriteria
         criteria = GradingCriteria(
@@ -55,8 +55,8 @@ class GradingCriteria(BaseModel):
     -------------------
     As with any pydantic model, providing invalid types will cause validation errors to be raised::
 
-        from core.models.grading_criteria import GradingCriteria
-        from core.models.objective import Objective
+        from turing.models.grading_criteria import GradingCriteria
+        from turing.models.objective import Objective
 
         # raises ValidationError, since "grammatical accuracy" is
         # not a valid Objective

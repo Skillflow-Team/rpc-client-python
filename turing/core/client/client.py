@@ -5,7 +5,7 @@ from uuid import uuid4
 
 import requests
 
-from core.errors import NetworkError, RPCMethodError
+from ..errors import NetworkError, RPCMethodError
 
 HOSTED_ENDPOINT = "http://18.118.162.4/"
 

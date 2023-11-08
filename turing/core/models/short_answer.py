@@ -18,11 +18,11 @@ are many ways to setup question objects with different rubrics.
 """  # pylint: disable=line-too-long
 from typing import Dict, Union
 
-from core.client import RPCClient
-from core.errors import ValidationError
 
 from .objective import Objective
 from .rubric import Rubric, RubricType
+from ..client import RPCClient
+from ..errors import ValidationError
 
 
 class ShortAnswerQuestion:

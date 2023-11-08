@@ -11,12 +11,12 @@ We want to check that:
 
 import pytest
 
-from core.models.objective import Objective
-from core.models.rubric import (
+from turing.models.objective import Objective
+from turing.models.rubric import (
     Rubric,
     RubricType,
 )
-from core.errors import ValidationError
+from turing.errors import ValidationError
 
 
 def test_rubric_type_values():

@@ -12,10 +12,10 @@ from unittest.mock import patch
 
 import pytest
 
-from core.errors import ValidationError
-from core.models.objective import Objective
-from core.models.rubric import Rubric, RubricType
-from core.models.short_answer import ShortAnswerQuestion
+from turing.errors import ValidationError
+from turing.models.objective import Objective
+from turing.models.rubric import Rubric, RubricType
+from turing.models.short_answer import ShortAnswerQuestion
 
 
 def test_short_answer_question_init_no_rubric():
@@ -167,7 +167,7 @@ def test_grade_method():
         "Canberra",
         rubric=Rubric.from_rubric_type(RubricType.FACTUAL_RUBRIC),
     )
-    with patch("core.client.client.RPCClient.short_answer") as mock_request:
+    with patch("turing.client.client.RPCClient.short_answer") as mock_request:
         mock_request.return_value = ("feedback", 1.0)
         feedback, score = question.grade("answer")
 

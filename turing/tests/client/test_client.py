@@ -13,8 +13,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from core.client.client import RPCClient, HOSTED_ENDPOINT
-from core.errors import NetworkError, RPCMethodError
+from turing.client.client import RPCClient, HOSTED_ENDPOINT
+from turing.errors import NetworkError, RPCMethodError
 
 
 def test_init_method():
@@ -104,7 +104,7 @@ def test__failed_request(_):
     assert exp.value.args[0] == "Failed to connect to the RPC server: test-error"
 
 
-@patch("core.client.client.RPCClient._make_request")
+@patch("turing.client.client.RPCClient._make_request")
 def test_short_answer(mock_request):
     """Test the short answer method of the RPCClient."""
     mock_request.return_value = {"feedback": "GOOD JOB!", "score": 3.0}
